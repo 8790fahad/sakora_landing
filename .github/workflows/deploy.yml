@@ -1,0 +1,57 @@
+# Build marketing site + shops and deploy to Hostinger (sakora.shop).
+# Required GitHub secrets:
+#   FTP_SERVER      e.g. ftp.sakora.shop
+#   FTP_USERNAME    e.g. u761347833.dev
+#   FTP_PASSWORD
+# Optional:
+#   FTP_SERVER_DIR  default /  (use when the FTP user is already rooted in public_html)
+name: Deploy website to Hostinger
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: website-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_APP_URL: https://app.sakora.shop
+          VITE_API_URL: https://nexifour.ng/sakora/api
+          VITE_SITE_URL: https://sakora.shop
+          VITE_STOREFRONT_URL: https://sakora.shop
+          VITE_SOCKET_URL: https://nexifour.ng
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          # Hostinger certs often don't match the FTP hostname
+          security: loose
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_SERVER_DIR != '' && secrets.FTP_SERVER_DIR || '/' }}
+          dangerous-clean-slate: false
+          timeout: 60000

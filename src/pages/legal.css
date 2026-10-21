@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap");
+
+.legal {
+  background: #f6f3ee;
+  color: #111827;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.legal * {
+  box-sizing: border-box;
+}
+
+.legal a {
+  color: #0f766e;
+  text-decoration: none;
+}
+
+.legal .wrap {
+  margin: 0 auto;
+  max-width: 760px;
+  padding: 0 16px;
+}
+
+.legal header {
+  background: #0f766e;
+  color: #fff;
+  padding: 28px 0;
+}
+
+.legal header a {
+  color: #ccfbf1;
+}
+
+.legal header h1 {
+  font-size: 32px;
+  margin: 12px 0 4px;
+}
+
+.legal header p {
+  margin: 0;
+}
+
+.legal main {
+  padding: 28px 16px 64px;
+}
+
+.legal nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.legal nav a {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  color: #111827;
+  padding: 6px 12px;
+}
+
+.legal section {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  padding: 18px;
+}
+
+.legal h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.legal section p {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.legal-cta {
+  margin-top: 24px;
+}
