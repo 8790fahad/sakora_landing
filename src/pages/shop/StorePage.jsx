@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { shopPageMeta, usePageMeta } from "../../seo";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Package, Minus, Plus, ShoppingBag, Trash2, Store, MessageCircle, Search } from "lucide-react";
 import toast from "react-hot-toast";
@@ -108,6 +109,17 @@ const StorePage = () => {
 
   const settings = asSettings(store?.settings);
   const shopPhone = settings.whatsapp || store?.phone;
+  const pageMeta = useMemo(
+    () =>
+      shopPageMeta({
+        slug,
+        store,
+        products,
+        status: loading ? "loading" : store ? "ready" : "missing",
+      }),
+    [slug, store, products, loading]
+  );
+  usePageMeta(pageMeta);
 
   const orderOnWhatsApp = (product) => {
     const text = shareProductText(store.name, product, window.location.href);

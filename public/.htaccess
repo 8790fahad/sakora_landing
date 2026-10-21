@@ -1,12 +1,27 @@
+DirectoryIndex index.php index.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # Serve existing files and directories as-is
+  # Direct requests for the shells themselves
+  RewriteCond %{THE_REQUEST} \s/+index\.(php|html)[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  RewriteCond %{THE_REQUEST} \s/+seo\.php[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  RewriteCond %{THE_REQUEST} \s/+sitemap\.php[\s?] [NC]
+  RewriteRule ^ /sitemap.xml [R=301,L]
+
+  # Shop list for search engines. [END] so this does not fall through to index.php.
+  RewriteRule ^sitemap\.xml$ sitemap.php [END]
+
+  # Real files (JS, CSS, images, robots.txt)
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # SPA fallback for React Router (shops, orders, legal, track)
-  RewriteRule ^ index.html [L]
+  # Every app route gets the right title, description, and preview tags.
+  RewriteRule ^ index.php [END]
 </IfModule>

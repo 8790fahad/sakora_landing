@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { appPath } from "../config";
-import { usePageMeta } from "../seo";
+import { staticPageMeta, usePageMeta } from "../seo";
 import "./legal.css";
 
 const documents = {
@@ -92,13 +92,7 @@ export default function LegalPage() {
   const { slug } = useParams();
   const doc = documents[slug];
 
-  usePageMeta({
-    title: doc ? `${doc.title} — Sakora` : "Sakora",
-    description: doc
-      ? doc.sections[0].body
-      : "Terms and privacy information for Sakora.",
-    path: `/legal/${doc ? slug : "terms"}`,
-  });
+  usePageMeta(staticPageMeta(doc ? `/legal/${slug}` : "/legal/terms"));
 
   if (!doc) {
     return <Navigate to="/legal/terms" replace />;

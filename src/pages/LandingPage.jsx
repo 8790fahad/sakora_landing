@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { appPath } from "../config";
 import GetTheApp from "../components/GetTheApp";
 import NewsletterForm from "../components/NewsletterForm";
-import { usePageMeta } from "../seo";
+import { staticPageMeta, usePageMeta } from "../seo";
 import "./landing.css";
 
 const PROFIT = [
@@ -134,12 +134,7 @@ const LandingPage = () => {
   const [activeStory, setActiveStory] = useState(0);
   const [playing, setPlaying] = useState(false);
 
-  usePageMeta({
-    title: "Sakora — Sales, inventory, and profit for your shop",
-    description:
-      "Sakora shows revenue, cost of sales, gross profit, expenses, and net profit. Record sales, stock, invoices, and a shareable shop from your phone.",
-    path: "/",
-  });
+  usePageMeta(staticPageMeta("/"));
 
   useEffect(() => {
     const previousScroll = document.documentElement.style.scrollBehavior;

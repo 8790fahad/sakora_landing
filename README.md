@@ -1,28 +1,12 @@
-# Sakora website (`sakora_landing`)
+# Sakora website
 
-Marketing site, customer shops, and order tracking for [sakora.shop](https://sakora.shop).
+Marketing site and customer shops. A shop is `https://sakora.shop/your-shop-name`. Order tracking is `/track`. The merchant app stays in `sakora_ui`.
 
-| Path | Page |
-|------|------|
-| `/` | Landing |
-| `/legal/:slug` | Terms / privacy |
-| `/track` | Order lookup |
-| `/:shop` | Customer shop |
-| `/:shop/:orderNumber` | Order status + payment verify |
-
-Merchant app: [app.sakora.shop](https://app.sakora.shop)
-
-## Local
+Search engines and link previews read the title and description from the HTML Hostinger serves. `index.php` fills those in for each page and each shop. `sitemap.php` lists the marketing pages and public shops.
 
 ```bash
 npm install
-npm run dev   # http://localhost:5174
+npm run dev
 ```
 
-Copy `.env.example` to `.env` as needed. Shops call the API at `VITE_API_URL`.
-
-## Deploy
-
-Push to `main` runs `.github/workflows/deploy.yml` (FTPS → Hostinger `sakora.shop`).
-
-Required secrets: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
+Open [http://localhost:5174](http://localhost:5174). Sign in and Get started go to the app at `VITE_APP_URL` (default `http://localhost:5173`).

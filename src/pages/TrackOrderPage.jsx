@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { API_URL, STOREFRONT_URL } from "../config";
-import { usePageMeta } from "../seo";
+import { staticPageMeta, usePageMeta } from "../seo";
 import "./track.css";
 
 const STATUS_STEPS = [
@@ -60,11 +60,7 @@ const TrackOrderPage = () => {
   const [complaintStatus, setComplaintStatus] = useState("");
   const [sending, setSending] = useState(false);
 
-  usePageMeta({
-    title: "Track order — Sakora",
-    description: "Track a Sakora shop order with your shop name and order number.",
-    path: "/track",
-  });
+  usePageMeta(staticPageMeta("/track"));
 
   const normalizeShop = (value) =>
     String(value || "")

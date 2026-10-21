@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "../../storefront/api";
+import { orderPageMeta, usePageMeta } from "../../seo";
 import PoweredBy from "../../components/PoweredBy";
 import "../../storefront.css";
 
@@ -33,6 +34,8 @@ const OrderStatusPage = () => {
     message: "",
   });
   const [sending, setSending] = useState(false);
+
+  usePageMeta(orderPageMeta(slug, orderNumber));
 
   const load = async () => {
     const response = await api.storefront.order(slug, orderNumber);

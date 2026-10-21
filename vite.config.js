@@ -14,6 +14,18 @@ export default defineConfig({
         if (fs.existsSync(src)) {
           fs.copyFileSync(src, dest);
         }
+        const apiUrl = (process.env.VITE_API_URL || "http://localhost:5100/api").replace(
+          /\/$/,
+          ""
+        );
+        const siteUrl = (process.env.VITE_SITE_URL || "https://sakora.shop").replace(
+          /\/$/,
+          ""
+        );
+        fs.writeFileSync(
+          path.resolve(__dirname, "dist/seo-config.json"),
+          JSON.stringify({ apiUrl, siteUrl }, null, 2)
+        );
       },
     },
   ],

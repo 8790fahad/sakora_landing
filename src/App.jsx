@@ -22,6 +22,8 @@ const RESERVED_SLUGS = new Set([
   "pricing",
   "faq",
   "newsletter",
+  "directory",
+  "sitemap",
 ]);
 
 function ShopRedirect() {
