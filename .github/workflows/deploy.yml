@@ -57,21 +57,60 @@ jobs:
           echo "dir=${dir}" >> "$GITHUB_OUTPUT"
 
       # Hostinger often resets the FTP data connection while creating the
-      # first folder. A second attempt usually gets through.
+      # first folder. Secrets stay action inputs so characters in the
+      # password are not parsed as YAML.
       - name: Deploy via FTPS
-        uses: Wandalen/wretry.action@v3.8.0
+        id: deploy1
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          action: SamKirkland/FTP-Deploy-Action@v4.3.5
-          attempt_limit: 3
-          attempt_delay: 20000
-          with: |
-            server: ${{ secrets.FTP_SERVER }}
-            username: ${{ secrets.FTP_USERNAME }}
-            password: ${{ secrets.FTP_PASSWORD }}
-            protocol: ftps
-            port: 21
-            security: loose
-            local-dir: ./dist/
-            server-dir: ${{ steps.ftp.outputs.dir }}
-            dangerous-clean-slate: false
-            timeout: 180000
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          security: loose
+          local-dir: ./dist/
+          server-dir: ${{ steps.ftp.outputs.dir }}
+          dangerous-clean-slate: false
+          timeout: 180000
+
+      - name: Wait before FTP retry
+        if: steps.deploy1.outcome == 'failure'
+        run: sleep 20
+
+      - name: Deploy via FTPS (attempt 2)
+        id: deploy2
+        if: steps.deploy1.outcome == 'failure'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          security: loose
+          local-dir: ./dist/
+          server-dir: ${{ steps.ftp.outputs.dir }}
+          dangerous-clean-slate: false
+          timeout: 180000
+
+      - name: Wait before final FTP retry
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        run: sleep 20
+
+      - name: Deploy via FTPS (attempt 3)
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          security: loose
+          local-dir: ./dist/
+          server-dir: ${{ steps.ftp.outputs.dir }}
+          dangerous-clean-slate: false
+          timeout: 180000
