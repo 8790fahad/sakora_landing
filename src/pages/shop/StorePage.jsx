@@ -9,6 +9,7 @@ import { applyStock } from "../../storefront/stock";
 import { openSquadCheckout } from "../../storefront/squadCheckout";
 import { whatsappLink, shareProductText, asSettings } from "../../storefront/share";
 import PoweredBy from "../../components/PoweredBy";
+import { productImageSrc } from "../../utils/productImage";
 import "../../storefront.css";
 
 const cartKey = (slug) => `sakora_cart_${slug}`;
@@ -223,7 +224,7 @@ const StorePage = () => {
               <p className="text-xs uppercase tracking-wide text-white/80">Online shop</p>
               <h1 className="text-3xl font-bold truncate">{store.name}</h1>
               <p className="text-white/90 text-sm mt-1">
-                {settings.tagline || "Order now. Pay with Squad or WhatsApp."}
+                {settings.tagline || store.description || "Order now. Pay with Squad or WhatsApp."}
               </p>
             </div>
           </div>
@@ -283,9 +284,13 @@ const StorePage = () => {
                 <div className="h-36 rounded-xl bg-teal-50 flex items-center justify-center mb-3">
                   {product.image ? (
                     <img
-                      src={product.image}
+                      src={productImageSrc(product.image, "card")}
                       alt={product.name}
-                      className="h-full object-cover rounded-xl"
+                      width={800}
+                      height={144}
+                      decoding="async"
+                      loading="lazy"
+                      className="h-full w-full object-cover rounded-xl"
                     />
                   ) : (
                     <Package className="w-10 h-10 text-teal-300" />
