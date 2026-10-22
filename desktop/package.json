@@ -43,6 +43,8 @@
       "icon": "icon.png",
       "category": "public.app-category.business",
       "identity": null,
+      "gatekeeperAssess": false,
+      "hardenedRuntime": false,
       "target": [
         {
           "target": "dmg",

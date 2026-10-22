@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 
-const size = 256;
+const size = 1024;
 const raw = Buffer.alloc((size * 4 + 1) * size);
 
 for (let y = 0; y < size; y++) {
