@@ -24,8 +24,10 @@ export const APP_STORE_URL =
   import.meta.env.VITE_APP_STORE_URL ||
   "https://apps.apple.com/search?term=Sakora";
 
-export const DESKTOP_WINDOWS_URL = import.meta.env.VITE_DESKTOP_WINDOWS_URL || "";
-export const DESKTOP_MAC_URL = import.meta.env.VITE_DESKTOP_MAC_URL || "";
+export const DESKTOP_WINDOWS_URL =
+  import.meta.env.VITE_DESKTOP_WINDOWS_URL || "/downloads/Sakora-Setup.exe";
+export const DESKTOP_MAC_URL =
+  import.meta.env.VITE_DESKTOP_MAC_URL || "/downloads/Sakora.dmg";
 
 export function appPath(path) {
   return `${APP_URL}${path}`;

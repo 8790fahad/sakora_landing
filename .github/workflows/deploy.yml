@@ -17,7 +17,64 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  desktop-windows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Build Windows installer
+        working-directory: desktop
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: |
+          npm ci
+          npx electron-builder --win nsis --x64
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-windows
+          path: desktop/dist/Sakora-Setup.exe
+          if-no-files-found: error
+
+  desktop-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Build Mac disk image
+        working-directory: desktop
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: |
+          npm ci
+          npx electron-builder --mac dmg --universal -c.mac.identity=null
+
+      - name: Upload Mac disk image
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-mac
+          path: desktop/dist/Sakora.dmg
+          if-no-files-found: error
+
   deploy:
+    needs: [desktop-windows, desktop-mac]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,6 +97,13 @@ jobs:
           VITE_SITE_URL: https://sakora.shop
           VITE_STOREFRONT_URL: https://sakora.shop
           VITE_SOCKET_URL: https://nexifour.ng
+
+      - name: Add desktop downloads
+        uses: actions/download-artifact@v4
+        with:
+          pattern: desktop-*
+          path: dist/downloads
+          merge-multiple: true
 
       - name: Resolve FTP directory
         id: ftp
@@ -73,7 +137,7 @@ jobs:
           local-dir: ./dist/
           server-dir: ${{ steps.ftp.outputs.dir }}
           dangerous-clean-slate: false
-          timeout: 180000
+          timeout: 900000
 
       - name: Wait before FTP retry
         if: steps.deploy1.outcome == 'failure'
@@ -94,7 +158,7 @@ jobs:
           local-dir: ./dist/
           server-dir: ${{ steps.ftp.outputs.dir }}
           dangerous-clean-slate: false
-          timeout: 180000
+          timeout: 900000
 
       - name: Wait before final FTP retry
         if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
@@ -113,4 +177,4 @@ jobs:
           local-dir: ./dist/
           server-dir: ${{ steps.ftp.outputs.dir }}
           dangerous-clean-slate: false
-          timeout: 180000
+          timeout: 900000

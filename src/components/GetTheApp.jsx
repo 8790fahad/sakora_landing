@@ -3,7 +3,6 @@ import {
   DESKTOP_MAC_URL,
   DESKTOP_WINDOWS_URL,
   PLAY_STORE_URL,
-  appPath,
 } from "../config";
 
 function Badge({ href, kicker, title, mark, external, download }) {
@@ -12,7 +11,7 @@ function Badge({ href, kicker, title, mark, external, download }) {
       className="store-badge"
       href={href}
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-      {...(download ? { download: true } : {})}
+      {...(download ? { download } : {})}
     >
       <span className="badge-mark" aria-hidden="true">
         {mark}
@@ -26,9 +25,6 @@ function Badge({ href, kicker, title, mark, external, download }) {
 }
 
 export default function GetTheApp() {
-  const windowsHref = DESKTOP_WINDOWS_URL || appPath("/");
-  const macHref = DESKTOP_MAC_URL || appPath("/");
-
   return (
     <div className="store-badges">
       <Badge
@@ -46,18 +42,18 @@ export default function GetTheApp() {
         external
       />
       <Badge
-        href={windowsHref}
-        kicker={DESKTOP_WINDOWS_URL ? "Download for" : "Open on"}
+        href={DESKTOP_WINDOWS_URL}
+        kicker="Download for"
         title="Windows"
         mark="⊞"
-        download={Boolean(DESKTOP_WINDOWS_URL)}
+        download="Sakora-Setup.exe"
       />
       <Badge
-        href={macHref}
-        kicker={DESKTOP_MAC_URL ? "Download for" : "Open on"}
+        href={DESKTOP_MAC_URL}
+        kicker="Download for"
         title="Mac"
         mark="⌘"
-        download={Boolean(DESKTOP_MAC_URL)}
+        download="Sakora.dmg"
       />
     </div>
   );

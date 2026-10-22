@@ -17,11 +17,17 @@ DirectoryIndex index.php index.html
   # Shop list for search engines. [END] so this does not fall through to index.php.
   RewriteRule ^sitemap\.xml$ sitemap.php [END]
 
-  # Real files (JS, CSS, images, robots.txt)
+  # Real files (JS, CSS, images, installers, robots.txt)
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
   # Every app route gets the right title, description, and preview tags.
   RewriteRule ^ index.php [END]
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(exe|dmg)$">
+    Header set Content-Disposition "attachment"
+  </FilesMatch>
 </IfModule>
