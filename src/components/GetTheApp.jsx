@@ -5,12 +5,13 @@ import {
   PLAY_STORE_URL,
 } from "../config";
 
-function desktopSystem() {
+function visitorSystem() {
   if (typeof navigator === "undefined") return "other";
   const ua = navigator.userAgent || "";
   const platform = navigator.userAgentData?.platform || navigator.platform || "";
-  const iPad = platform === "MacIntel" && navigator.maxTouchPoints > 1;
-  if (/Android|iPhone|iPad|iPod/i.test(ua) || iPad) return "other";
+  const iPad = /Mac/i.test(platform) && navigator.maxTouchPoints > 1;
+  if (/Android/i.test(ua) || /Android/i.test(platform)) return "android";
+  if (/iPhone|iPad|iPod/i.test(ua) || iPad) return "ios";
   if (/Win/i.test(platform) || /Windows/i.test(ua)) return "windows";
   if (/Mac/i.test(platform) || /Macintosh|Mac OS/i.test(ua)) return "mac";
   return "other";
@@ -36,26 +37,33 @@ function Badge({ href, kicker, title, mark, external, download }) {
 }
 
 export default function GetTheApp() {
-  const system = desktopSystem();
-  const showWindows = system !== "mac";
-  const showMac = system !== "windows";
+  const system = visitorSystem();
+  const known = system !== "other";
+  const showPlay = !known || system === "android";
+  const showAppStore = !known || system === "ios";
+  const showWindows = !known || system === "windows";
+  const showMac = !known || system === "mac";
 
   return (
     <div className="store-badges">
-      <Badge
-        href={PLAY_STORE_URL}
-        kicker="Get it on"
-        title="Google Play"
-        mark="▶"
-        external
-      />
-      <Badge
-        href={APP_STORE_URL}
-        kicker="Download on the"
-        title="App Store"
-        mark=""
-        external
-      />
+      {showPlay ? (
+        <Badge
+          href={PLAY_STORE_URL}
+          kicker="Get it on"
+          title="Google Play"
+          mark="▶"
+          external
+        />
+      ) : null}
+      {showAppStore ? (
+        <Badge
+          href={APP_STORE_URL}
+          kicker="Download on the"
+          title="App Store"
+          mark=""
+          external
+        />
+      ) : null}
       {showWindows ? (
         <Badge
           href={DESKTOP_WINDOWS_URL}
