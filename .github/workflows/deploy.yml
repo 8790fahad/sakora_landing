@@ -27,8 +27,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install Wine
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends wine wine32:i386 wine64
 
       - name: Build Windows installer
         working-directory: desktop
@@ -56,8 +60,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: desktop/package-lock.json
 
       - name: Build Mac disk image
         working-directory: desktop
@@ -66,7 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci
-          npx electron-builder --mac dmg --universal -c.mac.identity=null
+          npx electron-builder --mac dmg --universal
 
       - name: Upload Mac disk image
         uses: actions/upload-artifact@v4
