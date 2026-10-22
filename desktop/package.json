@@ -10,7 +10,7 @@
     "dev": "electron . --dev",
     "icon": "node scripts/make-icon.js",
     "dist:win": "electron-builder --win nsis --x64",
-    "dist:mac": "electron-builder --mac dmg --universal"
+    "dist:mac": "electron-builder --mac dmg --arm64"
   },
   "devDependencies": {
     "electron": "^44.9.0",
@@ -47,7 +47,7 @@
         {
           "target": "dmg",
           "arch": [
-            "universal"
+            "arm64"
           ]
         }
       ],

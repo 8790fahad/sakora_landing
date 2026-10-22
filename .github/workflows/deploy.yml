@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   desktop-windows:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,12 +30,13 @@ jobs:
 
       - name: Build Windows installer
         working-directory: desktop
+        shell: bash
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           ELECTRON_MIRROR: https://cdn.npmmirror.com/binaries/electron/
         run: |
-          unset GITHUB_TOKEN
-          unset GH_TOKEN
+          unset GITHUB_TOKEN || true
+          unset GH_TOKEN || true
           npm ci
           npx electron-builder --win nsis --x64
 
@@ -63,10 +64,10 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           ELECTRON_MIRROR: https://cdn.npmmirror.com/binaries/electron/
         run: |
-          unset GITHUB_TOKEN
-          unset GH_TOKEN
+          unset GITHUB_TOKEN || true
+          unset GH_TOKEN || true
           npm ci
-          npx electron-builder --mac dmg --universal
+          npx electron-builder --mac dmg --arm64
 
       - name: Upload Mac disk image
         uses: actions/upload-artifact@v4
