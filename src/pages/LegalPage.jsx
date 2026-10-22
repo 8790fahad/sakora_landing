@@ -102,7 +102,11 @@ export default function LegalPage() {
     <div className="legal">
       <header>
         <div className="wrap">
-          <a href="/">← Sakora</a>
+          <nav aria-label="Breadcrumb">
+            <a href="/">Sakora</a>
+            <span aria-hidden="true"> / </span>
+            <span>{doc.title}</span>
+          </nav>
           <h1>{doc.title}</h1>
           <p>Last updated {doc.updated}</p>
         </div>

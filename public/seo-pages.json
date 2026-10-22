@@ -1,7 +1,7 @@
 {
   "/": {
-    "title": "Sakora — Sales, inventory, and profit for your shop",
-    "description": "Sakora shows revenue, cost of sales, gross profit, expenses, and net profit. Record sales, stock, invoices, and a shareable shop from your phone.",
+    "title": "Sakora – Inventory, Sales & Business Management Software",
+    "description": "Manage your shop with Sakora. Track inventory, record daily sales, create invoices, sell on WhatsApp, and run your online store with an easy-to-use business app.",
     "keepJsonLd": true
   },
   "/track": {

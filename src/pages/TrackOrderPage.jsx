@@ -150,6 +150,11 @@ const TrackOrderPage = () => {
       </header>
 
       <main className="track-wrap track-main">
+        <nav className="track-crumb" aria-label="Breadcrumb">
+          <Link to="/">Sakora</Link>
+          <span aria-hidden="true"> / </span>
+          <span>Track your order</span>
+        </nav>
         <h1>Track your order</h1>
         <p className="track-lead">
           Enter the shop name from your link (

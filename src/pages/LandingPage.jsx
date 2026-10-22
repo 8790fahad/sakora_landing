@@ -215,12 +215,12 @@ const LandingPage = () => {
           <div className="wrap hero-grid">
             <div className="hero-copy reveal">
               <p className="kicker">Selling made easy</p>
-              <h1>Manage your store from anywhere.</h1>
+              <h1>Manage inventory, sales, and invoices from your phone.</h1>
               <p className="lead">
                 If you sell from a supermarket, pharmacy, stall, or WhatsApp,
-                Sakora keeps stock, invoices, and profit in one place. See
-                revenue, cost of sales, gross profit, expenses, and net profit
-                from your phone.
+                Sakora keeps stock, daily sales, invoices, and your online store
+                in one place. See revenue, cost of sales, gross profit, expenses,
+                and net profit from your phone.
               </p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href={appPath("/register")}>
@@ -509,8 +509,9 @@ const LandingPage = () => {
             <p className="kicker">Download Sakora</p>
             <h2>Phone, tablet, or computer.</h2>
             <p className="lead">
-              Get Sakora on Google Play and the App Store. On Windows and Mac,
-              open the same shop in the browser.
+              Download Sakora for Windows and Mac, or get it on Google Play and
+              the App Store. The Mac download is for Apple silicon. Use Mac
+              Intel if your Mac is from before 2020.
             </p>
             <GetTheApp />
             <p className="hero-note">

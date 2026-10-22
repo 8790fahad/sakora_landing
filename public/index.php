@@ -62,8 +62,9 @@ if (isset($pages[$path])) {
     "image" => $image,
     "robots" => "index, follow",
     "keepJsonLd" => $keep,
-    "jsonLd" => $keep ? null : seo_webpage_json_ld($page["title"], $page["description"], $canonical, $site),
+    "jsonLd" => $keep ? null : seo_webpage_json_ld($page["title"], $page["description"], $canonical, $site, $path),
     "cache" => "public, max-age=300",
+    "status" => 200,
   ];
 } elseif (preg_match("#^/([a-z0-9-]+)$#", $path, $match)) {
   $slug = strtolower($match[1]);
@@ -80,6 +81,7 @@ if (isset($pages[$path])) {
       "robots" => "noindex, nofollow",
       "jsonLd" => null,
       "cache" => "public, max-age=120",
+      "status" => 404,
     ];
   } else {
     $canonical = $site . "/" . rawurlencode($shop["slug"] ?: $slug);
@@ -93,6 +95,7 @@ if (isset($pages[$path])) {
       "robots" => "index, follow",
       "jsonLd" => seo_shop_json_ld($shop, $canonical, $description),
       "cache" => "public, max-age=300",
+      "status" => 200,
     ];
   }
 } elseif (preg_match("#^/([a-z0-9-]+)/([A-Za-z0-9-]+)$#", $path, $match)) {
@@ -104,6 +107,7 @@ if (isset($pages[$path])) {
     "robots" => "noindex, nofollow",
     "jsonLd" => null,
     "cache" => "private, no-store",
+    "status" => 200,
   ];
 } else {
   $meta = [
@@ -114,6 +118,7 @@ if (isset($pages[$path])) {
     "robots" => "noindex, nofollow",
     "jsonLd" => null,
     "cache" => "public, max-age=120",
+    "status" => 404,
   ];
 }
 
@@ -125,6 +130,7 @@ if (!is_file($htmlFile)) {
   exit;
 }
 
+http_response_code((int) ($meta["status"] ?? 200));
 header("Content-Type: text/html; charset=UTF-8");
 header("Cache-Control: " . $meta["cache"]);
 header("X-Robots-Tag: " . $meta["robots"]);

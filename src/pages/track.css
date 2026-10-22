@@ -39,6 +39,17 @@
   height: 28px;
 }
 
+.track-crumb {
+  margin: 0 0 0.75rem;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.track-crumb a {
+  color: #0f766e;
+  text-decoration: none;
+}
+
 .track-back {
   color: #0f766e;
   text-decoration: none;

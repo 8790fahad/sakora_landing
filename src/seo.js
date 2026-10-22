@@ -77,7 +77,7 @@ export function homeJsonLd() {
         name: "Sakora",
         url,
         description:
-          "Shop software for sales, inventory, invoices, and profit.",
+          "Manage your shop with Sakora. Track inventory, record daily sales, create invoices, sell on WhatsApp, and run your online store.",
         publisher: {
           "@type": "Organization",
           name: "Sakora",
@@ -92,12 +92,7 @@ export function homeJsonLd() {
         operatingSystem: "Web, Android, iOS, Windows, macOS",
         url,
         description:
-          "Shop software for sales, inventory, invoices, and profit: revenue, cost of sales, gross profit, expenses, and net profit.",
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "NGN",
-        },
+          "Business app for inventory, daily sales, invoices, WhatsApp selling, and an online store. Starter is free. Shop and Business plans are paid.",
       },
       {
         "@type": "FAQPage",
@@ -156,9 +151,8 @@ export function homeJsonLd() {
   };
 }
 
-function webPageJsonLd(title, description, path) {
+function webPageNode(title, description, path) {
   return {
-    "@context": "https://schema.org",
     "@type": "WebPage",
     name: title,
     description,
@@ -168,6 +162,43 @@ function webPageJsonLd(title, description, path) {
       name: "Sakora",
       url: `${SITE_URL}/`,
     },
+  };
+}
+
+function breadcrumbLabel(path, title) {
+  if (path.startsWith("/legal/")) return title.replace(/ — Sakora$/, "");
+  if (path === "/track") return "Track your order";
+  return title.replace(/ — Sakora$/, "");
+}
+
+function pageJsonLd(title, description, path) {
+  const page = webPageNode(title, description, path);
+  const nested = path.startsWith("/legal/") || path === "/track";
+  if (!nested) {
+    return { "@context": "https://schema.org", ...page };
+  }
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      page,
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Sakora",
+            item: absoluteUrl("/"),
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: breadcrumbLabel(path, title),
+            item: absoluteUrl(path),
+          },
+        ],
+      },
+    ],
   };
 }
 
@@ -190,7 +221,7 @@ export function staticPageMeta(path) {
     jsonLd:
       path === "/"
         ? homeJsonLd()
-        : webPageJsonLd(page.title, page.description, path),
+        : pageJsonLd(page.title, page.description, path),
   };
 }
 

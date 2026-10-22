@@ -264,9 +264,8 @@ function seo_shop_json_ld($shop, $canonical, $description) {
   return $data;
 }
 
-function seo_webpage_json_ld($title, $description, $canonical, $siteUrl) {
-  return [
-    "@context" => "https://schema.org",
+function seo_webpage_json_ld($title, $description, $canonical, $siteUrl, $path = "") {
+  $page = [
     "@type" => "WebPage",
     "name" => $title,
     "description" => $description,
@@ -275,6 +274,35 @@ function seo_webpage_json_ld($title, $description, $canonical, $siteUrl) {
       "@type" => "WebSite",
       "name" => "Sakora",
       "url" => $siteUrl . "/",
+    ],
+  ];
+  $nested = $path === "/track" || strpos($path, "/legal/") === 0;
+  if (!$nested) {
+    $page["@context"] = "https://schema.org";
+    return $page;
+  }
+  $label = $path === "/track" ? "Track your order" : preg_replace("/ — Sakora$/", "", $title);
+  return [
+    "@context" => "https://schema.org",
+    "@graph" => [
+      $page,
+      [
+        "@type" => "BreadcrumbList",
+        "itemListElement" => [
+          [
+            "@type" => "ListItem",
+            "position" => 1,
+            "name" => "Sakora",
+            "item" => $siteUrl . "/",
+          ],
+          [
+            "@type" => "ListItem",
+            "position" => 2,
+            "name" => $label,
+            "item" => $canonical,
+          ],
+        ],
+      ],
     ],
   ];
 }

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /shop/
 
 Sitemap: https://sakora.shop/sitemap.xml

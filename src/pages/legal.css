@@ -45,14 +45,19 @@
   padding: 28px 16px 64px;
 }
 
-.legal nav {
+.legal main nav {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 20px;
 }
 
-.legal nav a {
+.legal header nav {
+  font-size: 14px;
+  margin: 0;
+}
+
+.legal main nav a {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 999px;

@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LegalPage from "./pages/LegalPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import TrackOrderPage from "./pages/TrackOrderPage";
 import StorePage from "./pages/shop/StorePage";
 import OrderStatusPage from "./pages/shop/OrderStatusPage";
@@ -72,6 +73,7 @@ export default function App() {
 
       <Route path="/:slug/:orderNumber" element={<OrderRoute />} />
       <Route path="/:slug" element={<StoreRoute />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

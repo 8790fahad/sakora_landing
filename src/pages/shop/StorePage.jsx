@@ -195,6 +195,9 @@ const StorePage = () => {
           <Store className="w-10 h-10 mx-auto text-slate-400" />
           <h1 className="mt-3 text-xl font-semibold">Store not found</h1>
           <p className="text-slate-500">This shop is offline or does not exist.</p>
+          <a className="mt-4 inline-block text-teal-700" href="/">
+            Back to Sakora
+          </a>
         </div>
       </div>
     );
