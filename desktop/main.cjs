@@ -30,6 +30,9 @@ function createWindow() {
   });
 
   window.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("https://accounts.google.com/")) {
+      return { action: "allow" };
+    }
     shell.openExternal(url);
     return { action: "deny" };
   });
