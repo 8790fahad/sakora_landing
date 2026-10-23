@@ -714,10 +714,10 @@ body {
 
 .landing .store-badges {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 190px));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 22px;
-  max-width: 100%;
+  max-width: 420px;
 }
 
 .landing .store-badge {
@@ -748,9 +748,18 @@ body {
 }
 
 .landing .badge-mark {
-  width: 28px;
-  text-align: center;
-  font-size: 1.15rem;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.landing .badge-mark svg {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .landing .newsletter {

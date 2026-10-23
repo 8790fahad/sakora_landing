@@ -509,9 +509,8 @@ const LandingPage = () => {
             <p className="kicker">Download Sakora</p>
             <h2>Phone, tablet, or computer.</h2>
             <p className="lead">
-              Download Sakora for Windows and Mac, or get it on Google Play and
-              the App Store. The Mac download is for Apple silicon. Use Mac
-              Intel if your Mac is from before 2020.
+              Download Sakora for Mac and Windows, or get it on the App Store
+              and Google Play.
             </p>
             <GetTheApp />
             <p className="hero-note">
