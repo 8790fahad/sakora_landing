@@ -77,11 +77,34 @@ const STORIES = [
   },
 ];
 
+const TERMS = [
+  { months: 1, label: "1 month" },
+  { months: 12, label: "12 months" },
+  { months: 24, label: "24 months" },
+  { months: 48, label: "48 months", bestValue: true },
+];
+
+const naira = (amount) => `₦${Number(amount || 0).toLocaleString("en-NG")}`;
+
+const quoteTerm = (price, months) => {
+  const payMonths = months === 12 ? 10 : months === 24 ? 18 : months === 48 ? 32 : 1;
+  const listPrice = price * months;
+  const amount = price * payMonths;
+  const save = Math.max(0, listPrice - amount);
+  return {
+    amount,
+    listPrice,
+    save,
+    percentOff: listPrice ? Math.round((save / listPrice) * 100) : 0,
+    perMonth: Math.round(amount / months),
+  };
+};
+
 const PLANS = [
   {
     key: "starter",
     name: "Starter",
-    price: "₦4,000/mo",
+    price: 4000,
     summary: "A single shop, sales, and stock.",
     features: [
       "1 shop and 1 user",
@@ -95,7 +118,7 @@ const PLANS = [
   {
     key: "growth",
     name: "Growth",
-    price: "₦12,000/mo",
+    price: 12000,
     summary: "Online shop, invoices, and a small team.",
     features: [
       "Everything in Starter",
@@ -111,7 +134,7 @@ const PLANS = [
   {
     key: "business",
     name: "Business",
-    price: "₦20,000/mo",
+    price: 20000,
     summary: "Teams, branches, and fuller reports.",
     features: [
       "Everything in Growth",
@@ -131,6 +154,7 @@ const LandingPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeStory, setActiveStory] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [months, setMonths] = useState(48);
 
   usePageMeta(staticPageMeta("/"));
 
@@ -229,7 +253,7 @@ const LandingPage = () => {
                 </a>
               </div>
               <p className="hero-note">
-                Plans from ₦4,000 a month. Share a shop link in minutes.
+                Plans from ₦4,000 a month. Pay for 12, 24, or 48 months and the monthly rate drops.
               </p>
               <GetTheApp />
             </div>
@@ -447,36 +471,64 @@ const LandingPage = () => {
         <section className="section" id="pricing">
           <div className="wrap reveal-on-scroll">
             <p className="kicker">Pricing</p>
-            <h2>Three monthly plans.</h2>
+            <h2>Pay monthly, or save on a longer term.</h2>
             <p className="lead">
-              Starter is ₦4,000, Growth is ₦12,000, and Business is ₦20,000.
-              Payment happens in the app with Squad.
+              Starter is ₦4,000 a month, Growth is ₦12,000, and Business is ₦20,000.
+              12, 24, and 48 months cost less per month. You pay in the app with Squad.
             </p>
-            <div className="pricing">
-              {PLANS.map((plan) => (
-                <article
-                  key={plan.name}
-                  className={plan.popular ? "popular" : undefined}
+            <div className="price-toggle" aria-label="Billing period">
+              {TERMS.map((term) => (
+                <button
+                  key={term.months}
+                  type="button"
+                  className={months === term.months ? "is-active" : undefined}
+                  onClick={() => setMonths(term.months)}
                 >
-                  {plan.popular ? <p className="badge">Most popular</p> : null}
-                  <h3>{plan.name}</h3>
-                  <p className="price">{plan.price}</p>
-                  <p>{plan.summary}</p>
-                  <ul>
-                    {plan.features.map((feature) => (
-                      <li key={feature}>{feature}</li>
-                    ))}
-                  </ul>
-                  <a
-                    className={`btn btn-${plan.tone}`}
-                    href={appPath(
-                      `/register?next=${encodeURIComponent(`/billing?plan=${plan.key}&signup=1`)}`
-                    )}
-                  >
-                    {plan.cta}
-                  </a>
-                </article>
+                  {term.label}
+                  {term.bestValue ? <em>Best value</em> : null}
+                </button>
               ))}
+            </div>
+            <div className="pricing">
+              {PLANS.map((plan) => {
+                const priced = quoteTerm(plan.price, months);
+                const next = `/billing?plan=${plan.key}&months=${months}&signup=1`;
+                return (
+                  <article
+                    key={plan.name}
+                    className={plan.popular ? "popular" : undefined}
+                  >
+                    <div className="plan-top">
+                      {plan.popular ? <p className="badge">Most popular</p> : <span />}
+                      {priced.percentOff > 0 ? (
+                        <p className="off">{priced.percentOff}% off</p>
+                      ) : null}
+                    </div>
+                    <h3>{plan.name}</h3>
+                    <p className="price">
+                      {priced.save > 0 ? <s>{naira(plan.price)}/mo</s> : null}
+                      {naira(priced.perMonth)}
+                      <span>/mo</span>
+                    </p>
+                    <p>{plan.summary}</p>
+                    <p className="term-note">
+                      Today you pay {naira(priced.amount)} for {months}{" "}
+                      {months === 1 ? "month" : "months"}. Cancel anytime.
+                    </p>
+                    <ul>
+                      {plan.features.map((feature) => (
+                        <li key={feature}>{feature}</li>
+                      ))}
+                    </ul>
+                    <a
+                      className={`btn btn-${plan.tone}`}
+                      href={appPath(`/register?next=${encodeURIComponent(next)}`)}
+                    >
+                      {plan.cta}
+                    </a>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -542,7 +594,8 @@ const LandingPage = () => {
               <summary>How much does Sakora cost?</summary>
               <p>
                 Starter is ₦4,000 a month, Growth is ₦12,000, and Business is
-                ₦20,000. You pay with Squad from Billing in the app.
+                ₦20,000. You can pay for 1, 12, 24, or 48 months. A longer term
+                costs less per month, and you pay with Squad from Billing in the app.
               </p>
             </details>
           </div>

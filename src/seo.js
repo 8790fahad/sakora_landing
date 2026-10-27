@@ -92,7 +92,7 @@ export function homeJsonLd() {
         operatingSystem: "Web, Android, iOS, Windows, macOS",
         url,
         description:
-          "Business app for inventory, daily sales, invoices, WhatsApp selling, and an online store. Plans are ₦4,000, ₦12,000, and ₦20,000 a month.",
+          "Business app for inventory, daily sales, invoices, WhatsApp selling, and an online store. Plans are ₦4,000, ₦12,000, and ₦20,000 a month, with a lower rate for 12, 24, or 48 months.",
       },
       {
         "@type": "FAQPage",
@@ -134,7 +134,7 @@ export function homeJsonLd() {
             name: "How much does Sakora cost?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Starter is ₦4,000 a month, Growth is ₦12,000, and Business is ₦20,000. You pay with Squad from Billing.",
+              text: "Starter is ₦4,000 a month, Growth is ₦12,000, and Business is ₦20,000. You can pay for 1, 12, 24, or 48 months. A longer term costs less per month. You pay with Squad from Billing.",
             },
           },
         ],

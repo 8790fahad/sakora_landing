@@ -604,11 +604,14 @@ body {
 }
 
 .landing .price-toggle {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
   background: #f3f4f6;
   border-radius: 999px;
   padding: 4px;
   margin: 28px 0 8px;
+  max-width: 100%;
 }
 
 .landing .price-toggle button {
@@ -626,6 +629,55 @@ body {
   background: white;
   color: var(--ink);
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.landing .price-toggle em {
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--teal-dark);
+}
+
+.landing .pricing .plan-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 1.5rem;
+}
+
+.landing .pricing .plan-top .badge {
+  margin: 0;
+}
+
+.landing .pricing .off {
+  margin: 0;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.landing .pricing .price s {
+  display: block;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.landing .pricing .price span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.landing .pricing .term-note {
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 .landing .pricing {
