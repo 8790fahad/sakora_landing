@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "../../storefront/api";
+import { openSquadCheckout } from "../../storefront/squadCheckout";
 import { orderPageMeta, usePageMeta } from "../../seo";
 import PoweredBy from "../../components/PoweredBy";
 import "../../storefront.css";
@@ -26,6 +27,8 @@ const OrderStatusPage = () => {
   const { slug, orderNumber } = useParams();
   const [params] = useSearchParams();
   const [order, setOrder] = useState(null);
+  const [payment, setPayment] = useState(null);
+  const [paying, setPaying] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showComplaint, setShowComplaint] = useState(false);
   const [complaint, setComplaint] = useState({
@@ -41,6 +44,7 @@ const OrderStatusPage = () => {
     const response = await api.storefront.order(slug, orderNumber);
     const found = response.data.order;
     setOrder(found);
+    setPayment(response.data.payment || null);
     setComplaint({
       name: found.customerName || "",
       contact: found.customerPhone || found.customerEmail || "",
@@ -83,8 +87,12 @@ const OrderStatusPage = () => {
           current = verified.data.order;
           setOrder(current);
         } else if (current.paymentStatus !== "paid") {
-          const verified = await api.storefront.verify(slug, orderNumber, {});
-          if (verified.data.order) setOrder(verified.data.order);
+          try {
+            const verified = await api.storefront.verify(slug, orderNumber, {});
+            if (verified.data.order) setOrder(verified.data.order);
+          } catch (error) {
+            // The invoice can still be opened before Squad confirms it.
+          }
         }
       } catch (error) {
         toast.error(error.message || "Could not load order");
@@ -223,6 +231,37 @@ const OrderStatusPage = () => {
           >
             Track order
           </Link>
+          {!paid && payment?.publicKey && (
+            <button
+              type="button"
+              disabled={paying}
+              onClick={async () => {
+                setPaying(true);
+                try {
+                  const result = await openSquadCheckout({
+                    publicKey: payment.publicKey,
+                    email: payment.email || order.customerEmail,
+                    amount: payment.amount || order.total,
+                    currency: payment.currency || "NGN",
+                    transactionRef: payment.reference,
+                    customerName: payment.customerName || order.customerName,
+                    callbackUrl: window.location.href.split("?")[0],
+                  });
+                  if (result?.success) {
+                    const verified = await api.storefront.verify(slug, orderNumber, {});
+                    if (verified.data.order) setOrder(verified.data.order);
+                  }
+                } catch (error) {
+                  toast.error(error.message || "Could not open Squad");
+                } finally {
+                  setPaying(false);
+                }
+              }}
+              className="flex-1 py-3 rounded-xl bg-teal-600 text-white"
+            >
+              {paying ? "Opening Squad..." : "Pay with Squad"}
+            </button>
+          )}
           {!paid && (
             <button
               onClick={async () => {

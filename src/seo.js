@@ -92,7 +92,7 @@ export function homeJsonLd() {
         operatingSystem: "Web, Android, iOS, Windows, macOS",
         url,
         description:
-          "Business app for inventory, daily sales, invoices, WhatsApp selling, and an online store. Starter is free. Shop and Business plans are paid.",
+          "Business app for inventory, daily sales, invoices, WhatsApp selling, and an online store. Plans are ₦4,000, ₦12,000, and ₦20,000 a month.",
       },
       {
         "@type": "FAQPage",
@@ -131,18 +131,10 @@ export function homeJsonLd() {
           },
           {
             "@type": "Question",
-            name: "Is it free to start?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. Starter is free: 50 products, 1 user, and sales from your phone. Upgrade to Shop or Business when you need a website, WhatsApp invoices, or a team.",
-            },
-          },
-          {
-            "@type": "Question",
             name: "How much does Sakora cost?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Shop is ₦5,000 a month or ₦45,000 a year. Business is ₦15,000 a month or ₦120,000 a year. You pay with Squad from Billing in the app.",
+              text: "Starter is ₦4,000 a month, Growth is ₦12,000, and Business is ₦20,000. You pay with Squad from Billing.",
             },
           },
         ],

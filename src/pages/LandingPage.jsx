@@ -79,49 +79,48 @@ const STORIES = [
 
 const PLANS = [
   {
+    key: "starter",
     name: "Starter",
-    month: "Free",
-    year: "Free",
-    summary: "Start selling from your phone at no cost.",
+    price: "₦4,000/mo",
+    summary: "A single shop, sales, and stock.",
     features: [
       "1 shop and 1 user",
-      "Up to 50 products",
-      "Record cash and transfer sales",
-      "Basic inventory",
+      "Products and low-stock alerts",
+      "Cash and transfer sales",
+      "Customers and quotations",
     ],
-    cta: "Create free shop",
+    cta: "Choose Starter",
     tone: "ghost",
   },
   {
-    name: "Shop",
-    month: "₦5,000/mo",
-    year: "₦45,000/yr",
-    summary: "Online shop, WhatsApp selling, and invoices.",
+    key: "growth",
+    name: "Growth",
+    price: "₦12,000/mo",
+    summary: "Online shop, invoices, and a small team.",
     features: [
-      "Unlimited products",
-      "Shareable shop + WhatsApp",
-      "Invoices and online orders",
-      "Email and SMS alerts",
-      "Up to 3 staff",
+      "Everything in Starter",
+      "Public storefront and invoices",
       "Squad checkout",
+      "WhatsApp sharing",
+      "Up to 3 staff",
     ],
-    cta: "Start Shop plan",
+    cta: "Choose Growth",
     tone: "primary",
     popular: true,
   },
   {
+    key: "business",
     name: "Business",
-    month: "₦15,000/mo",
-    year: "₦120,000/yr",
-    summary: "For teams, branches, and growing stores.",
+    price: "₦20,000/mo",
+    summary: "Teams, branches, and fuller reports.",
     features: [
-      "Everything in Shop",
+      "Everything in Growth",
       "Unlimited staff and roles",
       "Multiple branches",
-      "Advanced reports",
+      "Reports and VAT",
       "Priority support",
     ],
-    cta: "Start Business",
+    cta: "Choose Business",
     tone: "dark",
   },
 ];
@@ -130,7 +129,6 @@ const thumb = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 
 const LandingPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [interval, setInterval] = useState("month");
   const [activeStory, setActiveStory] = useState(0);
   const [playing, setPlaying] = useState(false);
 
@@ -231,7 +229,7 @@ const LandingPage = () => {
                 </a>
               </div>
               <p className="hero-note">
-                Free to start. Share a shop link in minutes.
+                Plans from ₦4,000 a month. Share a shop link in minutes.
               </p>
               <GetTheApp />
             </div>
@@ -449,27 +447,11 @@ const LandingPage = () => {
         <section className="section" id="pricing">
           <div className="wrap reveal-on-scroll">
             <p className="kicker">Pricing</p>
-            <h2>Simple plans. Pay monthly or save yearly.</h2>
+            <h2>Three monthly plans.</h2>
             <p className="lead">
-              Start free. Upgrade when you need an online shop, staff, or more
-              than one branch. Paid with Squad.
+              Starter is ₦4,000, Growth is ₦12,000, and Business is ₦20,000.
+              Payment happens in the app with Squad.
             </p>
-            <div className="price-toggle" role="group" aria-label="Billing period">
-              <button
-                type="button"
-                className={interval === "month" ? "is-active" : ""}
-                onClick={() => setInterval("month")}
-              >
-                Monthly
-              </button>
-              <button
-                type="button"
-                className={interval === "year" ? "is-active" : ""}
-                onClick={() => setInterval("year")}
-              >
-                Yearly · save 25%
-              </button>
-            </div>
             <div className="pricing">
               {PLANS.map((plan) => (
                 <article
@@ -478,14 +460,19 @@ const LandingPage = () => {
                 >
                   {plan.popular ? <p className="badge">Most popular</p> : null}
                   <h3>{plan.name}</h3>
-                  <p className="price">{plan[interval]}</p>
+                  <p className="price">{plan.price}</p>
                   <p>{plan.summary}</p>
                   <ul>
                     {plan.features.map((feature) => (
                       <li key={feature}>{feature}</li>
                     ))}
                   </ul>
-                  <a className={`btn btn-${plan.tone}`} href={appPath("/register")}>
+                  <a
+                    className={`btn btn-${plan.tone}`}
+                    href={appPath(
+                      `/register?next=${encodeURIComponent(`/billing?plan=${plan.key}&signup=1`)}`
+                    )}
+                  >
                     {plan.cta}
                   </a>
                 </article>
@@ -499,7 +486,7 @@ const LandingPage = () => {
             <h2>Download, set up, and start selling.</h2>
             <p>Open Sakora on the web, create your shop, and share it today.</p>
             <a className="btn btn-primary btn-lg" href={appPath("/register")}>
-              Start free
+              Create your shop
             </a>
           </div>
         </section>
@@ -552,19 +539,10 @@ const LandingPage = () => {
               </p>
             </details>
             <details>
-              <summary>Is it free to start?</summary>
-              <p>
-                Yes. Starter is free: 50 products, 1 user, and sales from your
-                phone. Upgrade to Shop or Business when you need a website,
-                WhatsApp invoices, or a team.
-              </p>
-            </details>
-            <details>
               <summary>How much does Sakora cost?</summary>
               <p>
-                Shop is ₦5,000 a month or ₦45,000 a year. Business is ₦15,000 a
-                month or ₦120,000 a year. You pay with Squad from Billing in
-                the app.
+                Starter is ₦4,000 a month, Growth is ₦12,000, and Business is
+                ₦20,000. You pay with Squad from Billing in the app.
               </p>
             </details>
           </div>

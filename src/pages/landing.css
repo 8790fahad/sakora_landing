@@ -965,9 +965,12 @@ body {
   .landing .newsletter-inner,
   .landing .who,
   .landing .steps,
-  .landing .pricing,
   .landing .stories {
     grid-template-columns: 1fr;
+  }
+
+  .landing .pricing {
+    grid-template-columns: 1fr 1fr;
   }
 
   .landing .feature-grid {
@@ -1007,7 +1010,8 @@ body {
 }
 
 @media (max-width: 640px) {
-  .landing .feature-grid {
+  .landing .feature-grid,
+  .landing .pricing {
     grid-template-columns: 1fr;
   }
 }
