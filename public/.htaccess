@@ -30,8 +30,4 @@ DirectoryIndex index.php index.html
   <FilesMatch "\.(exe|dmg)$">
     Header set Content-Disposition "attachment"
   </FilesMatch>
-  <FilesMatch "^(index\.html|version\.json)$">
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-  </FilesMatch>
 </IfModule>
